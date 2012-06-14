@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="comicviewer.js"></script>
+        <script>
+            $(document).ready(function () {
+                window.scrollTo(0, 1);
+                $('#comic').click(function(){
+                    $(this).comicViewer();
+                });
+            });
+        </script>
+        <style>
+            .comic-viewer-frame {
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: rgba(0,0,0,0.8);
+            }
+            
+            .comic-viewer-viewport {
+                margin: 0 auto;
+                overflow: hidden;
+                position: relative;
+                top: 50%;
+            }
+            
+            .comic-viewer-image {
+                position: absolute;
+            }
+        </style>
+    </head>
+    <body>
+        <img id="comic" data-panels="0,0,199,209;190,0,199,209;380,0,389,409" src="fossils.png" width="770" height="1010"/>
+    </body>
+</html>
