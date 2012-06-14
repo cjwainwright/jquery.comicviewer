@@ -27,7 +27,14 @@
                     scale = window.innerWidth / width;
                 }
                 
-                $viewport.width(scale * width).height(scale * height).css('marginTop', -scale * height/2);
+                scale *= 0.9; //TODO - adjust scale such that image is never zoomed more than 100% in terms of screen pixels
+                
+                $viewport.css({
+                    width: scale * width,
+                    height: scale * height,
+                    marginTop: -scale * height/2
+                });
+                
                 $image.css({
                     left: -left * scale, 
                     top: -top * scale,
@@ -72,8 +79,9 @@
             destroy();
         });
         
-        setPanel(currentPanel);
-        
+        setTimeout(function () {
+            setPanel(currentPanel);
+        }, 50);
         return this;
     };
 })(jQuery);

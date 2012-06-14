@@ -26,10 +26,22 @@
                 overflow: hidden;
                 position: relative;
                 top: 50%;
+                width: 0;
+                height: 0;
             }
             
             .comic-viewer-image {
                 position: absolute;
+                width: 0;
+                height: 0;
+            }
+            
+            .comic-viewer-viewport,
+            .comic-viewer-image {
+                -webkit-transition: top 0.3s, left 0.3s, width 0.3s, height 0.3s, margin 0.3s;
+                -moz-transition: top 0.3s, left 0.3s, width 0.3s, height 0.3s, margin 0.3s;
+                -o-transition: top 0.3s, left 0.3s, width 0.3s, height 0.3s, margin 0.3s;
+                transition: top 0.3s, left 0.3s, width 0.3s, height 0.3s, margin 0.3s;
             }
         </style>
     </head>
