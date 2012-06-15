@@ -5,15 +5,17 @@
             var pattern = value.split(',');
             if (pattern.length == 4) {
                 rawPanels.push(pattern);
-            } else if (pattern.length == 6) {
-                var count = pattern[0],
-                    countX = pattern[1],
-                    stepX = pattern[2],
-                    stepY = pattern[3],
-                    width = pattern[4],
-                    height = pattern[5];
+            } else if (pattern.length == 8) {
+                var count = pattern[0] - 0,
+                    countX = pattern[1] - 0,
+                    stepX = pattern[2] - 0,
+                    stepY = pattern[3] - 0,
+                    width = pattern[4] - 0,
+                    height = pattern[5] - 0,
+                    offsetX = pattern[6] - 0,
+                    offsetY = pattern[7] - 0;
                 for(var n = 0; n < count; n++) {
-                    rawPanels.push([stepX * (n % countX), stepY * Math.floor(n / countX), width, height]);
+                    rawPanels.push([stepX * (n % countX) + offsetX, stepY * Math.floor(n / countX) + offsetY, width, height]);
                 }
             }
         });
@@ -46,7 +48,10 @@
                     scale = window.innerWidth / width;
                 }
                 
-                scale = Math.floor(scale * 0.9);
+                scale *= 0.9;
+                if(scale > 1) {
+                    scale = Math.floor(scale); // optimise scaling ratios to be integer for best image quality
+                }
                 
                 $viewport.css({
                     width: scale * width,
@@ -100,6 +105,7 @@
             destroy();
         });
         
+        // add short delay to allow css transition to synchronize
         setTimeout(function () {
             setPanel(currentPanel);
         }, 50);
