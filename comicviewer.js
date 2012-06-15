@@ -1,19 +1,38 @@
 (function ($) {
+    function getRawPanels(panelData) {
+        var rawPanels = [];
+        $.each(panelData.split(';'), function (index, value) {
+            var pattern = value.split(',');
+            if (pattern.length == 4) {
+                rawPanels.push(pattern);
+            } else if (pattern.length == 6) {
+                var count = pattern[0],
+                    countX = pattern[1],
+                    stepX = pattern[2],
+                    stepY = pattern[3],
+                    width = pattern[4],
+                    height = pattern[5];
+                for(var n = 0; n < count; n++) {
+                    rawPanels.push([stepX * (n % countX), stepY * Math.floor(n / countX), width, height]);
+                }
+            }
+        });
+        return rawPanels;
+    }
+
     $.fn.comicViewer = function () {
         var that = this;
         var currentPanel = 0;
         var $frame = $('<div class="comic-viewer-frame"/>'),
             $viewport = $('<div class="comic-viewer-viewport"/>'),
             $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src'));
-        
-        $frame.append($viewport.append($image));
-        $('body').append($frame);
-        var rawPanels = this.data('panels').split(';');
+        $('body').append($frame.append($viewport.append($image)));
+
+        var rawPanels = getRawPanels(this.data('panels'));
 
         function setPanel(panel) {
             var rawPanel = rawPanels[panel];
             if(rawPanel) {
-                rawPanel = rawPanel.split(',');
                 var left = rawPanel[0],
                     top = rawPanel[1],
                     width = rawPanel[2],
@@ -27,7 +46,7 @@
                     scale = window.innerWidth / width;
                 }
                 
-                scale *= 0.9; //TODO - adjust scale such that image is never zoomed more than 100% in terms of screen pixels
+                scale = Math.floor(scale * 0.9);
                 
                 $viewport.css({
                     width: scale * width,
@@ -42,6 +61,8 @@
                     height: that.height() * scale
                 });
                 currentPanel = panel;
+            } else {
+                destroy();
             }
         }
         
