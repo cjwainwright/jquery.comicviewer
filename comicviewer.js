@@ -50,7 +50,7 @@
                 
                 scale *= 0.9;
                 if(scale > 1) {
-                    scale = Math.floor(scale); // optimise scaling ratios to be integer for best image quality
+                    scale = Math.floor(scale * 4) / 4; // optimise scaling ratios to for best image quality
                 }
                 
                 $viewport.css({
@@ -71,6 +71,10 @@
             }
         }
         
+        function refreshPanel() {
+            setPanel(currentPanel);
+        }
+        
         function keydown(event) {
             switch(event.which) {
                 case 27: //escape
@@ -89,10 +93,12 @@
         
         function destroy() {
             $frame.remove();
-            $(document).unbind('keydown', keydown)
+            $(document).unbind('keydown', keydown);
+            $(window).unbind('resize', refreshPanel);
         }
         
-        $(document).bind('keydown', keydown)
+        $(document).bind('keydown', keydown);
+        $(window).bind('resize', refreshPanel);
         
         $viewport.click(function (event) {
             if (event.which == 1) {
@@ -106,9 +112,7 @@
         });
         
         // add short delay to allow css transition to synchronize
-        setTimeout(function () {
-            setPanel(currentPanel);
-        }, 50);
+        setTimeout(refreshPanel, 50);
         return this;
     };
 })(jQuery);
