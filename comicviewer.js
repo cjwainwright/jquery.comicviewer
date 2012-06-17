@@ -64,6 +64,9 @@
         function setPanel(panel) {
             var rawPanel = rawPanels[panel];
             if(rawPanel) {
+                $navPrev.css({visibility: (panel == 0) ? 'hidden' : 'visible'});
+                $navNext.css({visibility: (panel == rawPanels.length - 1) ? 'hidden' : 'visible'});
+            
                 var left = rawPanel[0],
                     top = rawPanel[1],
                     width = rawPanel[2],
