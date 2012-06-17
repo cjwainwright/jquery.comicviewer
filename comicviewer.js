@@ -27,8 +27,9 @@
         var currentPanel = 0;
         var $frame = $('<div class="comic-viewer-frame"/>'),
             $viewport = $('<div class="comic-viewer-viewport"/>'),
-            $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src'));
-        $('body').append($frame.append($viewport.append($image)));
+            $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')),
+            $navigation = $('<div class="comic-viewer-navigation">&lt;Prev Next&gt;</div>');
+        $('body').append($frame.append($viewport.append($image)).append($navigation));
 
         var rawPanels = getRawPanels(this.data('panels'));
 

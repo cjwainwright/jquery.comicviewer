@@ -12,41 +12,109 @@
             });
         </script>
         <style>
-            .comic-viewer-frame {
-                width: 100%;
-                height: 100%;
+            .comic-viewer-back {
+                display: table;
                 position: fixed;
                 top: 0;
                 left: 0;
+                width: 100%;
+                height: 100%;
                 background-color: rgba(0,0,0,0.8);
             }
             
+            .comic-viewer-back > .comic-viewer-center {
+                display: table-cell;
+                vertical-align: middle;
+                text-align: center;
+            }
+            
+            .comic-viewer-box {
+                display: inline-block;
+                padding: 5px;
+                position: relative;
+                background-color: rgba(255,255,255,0.2);
+                -o-border-radius: 5px;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+            }
+            
+            .comic-viewer-box-portrait {
+                padding-bottom: 48px;
+            }
+            
+            .comic-viewer-box-landscape {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+            
             .comic-viewer-viewport {
-                margin: 0 auto;
+                width: 300px;
+                height: 300px;
+                background-color: #FFF;
+                border: solid 1px black;
                 overflow: hidden;
                 position: relative;
-                top: 50%;
-                width: 0;
-                height: 0;
+                -o-border-radius: 3px;
+                -moz-border-radius: 3px;
+                -webkit-border-radius: 3px;
+                border-radius: 3px;
+                -o-box-shadow: 0 0 8px #000;
+                -moz-box-shadow: 0 0 8px #000;
+                -webkit-box-shadow: 0 0 8px #000;
+                box-shadow: 0 0 8px #000;
             }
             
-            .comic-viewer-image {
+            .comic-viewer-nav-next,
+            .comic-viewer-nav-prev {
                 position: absolute;
-                width: 0;
-                height: 0;
+                display: block;
+                width: 32px;
+                height: 48px;
+                background-repeat: no-repeat;
+                background-position: center center;
             }
             
-            .comic-viewer-viewport,
-            .comic-viewer-image {
-                -webkit-transition: top 0.3s, left 0.3s, width 0.3s, height 0.3s, margin 0.3s;
-                -moz-transition: top 0.3s, left 0.3s, width 0.3s, height 0.3s, margin 0.3s;
-                -o-transition: top 0.3s, left 0.3s, width 0.3s, height 0.3s, margin 0.3s;
-                transition: top 0.3s, left 0.3s, width 0.3s, height 0.3s, margin 0.3s;
+            .comic-viewer-nav-next {
+                right: 0px;
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAwCAYAAAALiLqjAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGCSURBVHjaYvz//z8DLQFAADEx0BgABBDNLQAIIGQLYmlhAUAAMYDiAIp/AXEsEp8qGCCAkDn/oZZEUNMCgABCt4DqlgAEEDYLqGoJQADhsoBqlgAEEDInGIclwZRYABBA6AJUtwQggLAJUtUSgADCJeGPwxJ/Ui0ACCB8klSxBCCACCmg2BKAACJGEUWWAAQQsV71wmGJFyG9AAFESoSRZQlAAJGa7Ei2BCCAyMk8JFkCEEDkFgHYLPmGzRKAAKKkICPKEoAAorQ4JmgJQAAxUqHZIg7EL9DE3gKxNhC/BAggSlsVXlgM/w3EcSDDQRyAAKJ28GCkJoAAoqnhIAwQQDTPBwABRPOcDBBApBhOVqkKEEA0NRyEAQKI5vUBQADRvEYDCCCa18kAAYRLgmpNF4AAonm7CCCAaN6yAwggmrdNAQKI5q1rgACief8AIIBo3sMBCCCa99EAAojmvUyAAELmUN1wEAYIIGpU+ngBQADRfCgBIIBobgFAANHcAoAAAwAq5m2wJK1y9gAAAABJRU5ErkJggg==);
+            }
+            
+            .comic-viewer-box-portrait .comic-viewer-nav-next {
+                bottom: 0px;
+            }
+            
+            .comic-viewer-box-landscape .comic-viewer-nav-next {
+                top: 0px;
+                height: 100%;
+            }
+            
+            .comic-viewer-nav-prev {
+                left: 0px;
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAwCAYAAAALiLqjAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAF6SURBVHjaYvz//z8DLQFAADEx0BgABBDNLQAIIFpZEAtjAAQQAygOqIxjgfgXjA8QQNQ2PAJq+H+YGEAA0cpwuAUAAUQrw+EWAAQQrQyHWwAQQJQaHozD8GCYGoAAoqnhIAwQQDQ1HIQBAogcw/1xGO6PTT1AANHUcBAGCCCaGg7CAAFEU8NBGCCAiDHcC4fhXsQ4DiCAaGo4CAMEEE0NB2GAAKKp4SAMEEC4DP9GDcNBGCCAaGo4CAMEEE0NB2GAAGKENlvEgfgqEAuj1a0SQPySksoZIIBglT7IkDgg/o0m/wKIvSixACCAaJZ6YBgggGiaREEYIIBong8AAojmORkggGhWisIwQADRtKgGYYAAonl9ABBANK/RAAKI5nUyQADRtMkCwgABRPN2EUAA0bxlBxBANG+bAgQQzVvXAAFE8/4BQADRvIcDEEA076MBBBDNe5kAAcRCgz7yYmQOQAAx0nqsAiCAaD6UABBANLcAIIBobgFAgAEAkrAlQqVK45cAAAAASUVORK5CYII=);
+            }
+            
+            .comic-viewer-box-portrait .comic-viewer-nav-prev {
+                bottom: 0px;
+            }
+            
+            .comic-viewer-box-landscape .comic-viewer-nav-prev {
+                top: 0px;
+                height: 100%;
             }
         </style>
     </head>
     <body>
         <!--<img id="comic" data-panels="0,0,199,209;190,0,199,209;380,0,389,409" src="fossils.png" width="770" height="1010"/>-->
         <img id="comic" data-panels="20,4,190,200,196,206,2,2" src="fossils.png" width="770" height="1010"/>
+        <div class="comic-viewer-back"><div class="comic-viewer-center">
+            <span class="comic-viewer-box comic-viewer-box-landscape">
+                <div class="comic-viewer-viewport">
+                    <img src="fossils.png" width="770" height="1010"/>
+                </div>
+                <a class="comic-viewer-nav-prev"></a>
+                <a class="comic-viewer-nav-next"></a>
+            </span>
+        </div></div>
     </body>
 </html>
