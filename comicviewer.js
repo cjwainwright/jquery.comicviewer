@@ -28,6 +28,7 @@
         
         // create elements
         var $back = $('<div class="comic-viewer-back"/>'),
+            $center = $('<span class="comic-viewer-center"/>'),
             $box = $('<span class="comic-viewer-box"/>'),
             $viewport =  $('<div class="comic-viewer-viewport"/>'),
             $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')),
@@ -36,12 +37,14 @@
         
         // build dom structure
         $back.append(
-            $box.append(
-                $viewport.append(
-                    $image
-                ),
-                $navPrev,
-                $navNext
+            $center.append(
+                $box.append(
+                    $viewport.append(
+                        $image
+                    ),
+                    $navPrev,
+                    $navNext
+                )
             )
         );
         
@@ -58,12 +61,23 @@
         
         var rawPanels = getRawPanels(this.data('panels'));
 
+        function center() {
+            $center.css({
+                top: window.pageYOffset,
+                left: window.pageXOffset,
+                height: window.innerHeight,
+                width: window.innerWidth
+            });
+        }
+        
         function setPanel(panel) {
             var rawPanel = rawPanels[panel];
             if(rawPanel) {
                 $navPrev.css({visibility: (panel == 0) ? 'hidden' : 'visible'});
                 $navNext.css({visibility: (panel == rawPanels.length - 1) ? 'hidden' : 'visible'});
-            
+                
+                center();
+                            
                 var left = rawPanel[0],
                     top = rawPanel[1],
                     width = rawPanel[2],
@@ -131,11 +145,13 @@
         function destroy() {
             $back.remove();
             $(document).unbind('keydown', keydown);
-            $(window).unbind('resize', refreshPanel);
+            $(window).unbind('resize', refreshPanel)
+                .unbind('scroll', center);
         }
         
         $(document).bind('keydown', keydown);
-        $(window).bind('resize', refreshPanel);
+        $(window).bind('resize', refreshPanel)
+            .bind('scroll', center);
         
         $viewport.click(function (event) {
             if (event.which == 1) {

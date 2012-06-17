@@ -1,14 +1,22 @@
 .comic-viewer-back {
-    position: fixed;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+}
+
+.comic-viewer-center {
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     text-align: center;
-    background-color: rgba(0,0,0,0.8);
 }
 
-.comic-viewer-back > .comic-viewer-box {
+.comic-viewer-center > .comic-viewer-box {
     top: 50%;
 }
 
