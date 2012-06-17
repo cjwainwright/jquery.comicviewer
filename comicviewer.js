@@ -51,11 +51,11 @@
         // append to document
         $('body').append($back);
 
-        function setOrientation(orientation) {
-            if((orientation == 0) || (orientation == 180)) {
-                $box.removeClass('comic-viewer-box-landscape').addClass('comic-viewer-box-portrait');
-            } else {
+        function setLandscape(landscape) {
+            if(landscape) {
                 $box.removeClass('comic-viewer-box-portrait').addClass('comic-viewer-box-landscape');
+            } else {
+                $box.removeClass('comic-viewer-box-landscape').addClass('comic-viewer-box-portrait');
             }
         }
         
@@ -68,16 +68,21 @@
                     top = rawPanel[1],
                     width = rawPanel[2],
                     height = rawPanel[3];
+         
+                var landscape = window.innerWidth > window.innerHeight;
+                setLandscape(landscape);
                 
+                var availableWindowWidth = window.innerWidth - 64 - (landscape ? 64 : 0);
+                var availableWindowHeight = window.innerHeight - 64 - (landscape ? 0 : 48);
+         
                 // choose the smallest scale factor
                 var scale;
-                if (window.innerWidth / width > window.innerHeight / height) {
-                    scale = window.innerHeight / height;
+                if (availableWindowWidth / width > availableWindowHeight / height) {
+                    scale = availableWindowHeight / height;
                 } else {
-                    scale = window.innerWidth / width;
+                    scale = availableWindowWidth / width;
                 }
                 
-                scale *= 0.9;
                 if(scale > 1) {
                     scale = Math.floor(scale * 4) / 4; // optimise scaling ratios to for best image quality
                 }
@@ -148,8 +153,6 @@
             }
         });
         
-        
-        setOrientation(90);
         // add short delay to allow css transition to synchronize
         setTimeout(refreshPanel, 50);
         return this;
