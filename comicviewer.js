@@ -25,12 +25,40 @@
     $.fn.comicViewer = function () {
         var that = this;
         var currentPanel = 0;
-        var $frame = $('<div class="comic-viewer-frame"/>'),
-            $viewport = $('<div class="comic-viewer-viewport"/>'),
+        
+        // create elements
+        var $back = $('<div class="comic-viewer-back"/>'),
+            $center = $('<div class="comic-viewer-center"/>'),
+            $box = $('<span class="comic-viewer-box"/>'),
+            $viewport =  $('<div class="comic-viewer-viewport"/>'),
             $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')),
-            $navigation = $('<div class="comic-viewer-navigation">&lt;Prev Next&gt;</div>');
-        $('body').append($frame.append($viewport.append($image)).append($navigation));
+            $navPrev = $('<a class="comic-viewer-nav-prev"/>'),
+            $navNext = $('<a class="comic-viewer-nav-next"/>');
+        
+        // build dom structure
+        $back.append(
+            $center.append(
+                $box.append(
+                    $viewport.append(
+                        $image
+                    ),
+                    $navPrev,
+                    $navNext
+                )
+            )
+        );
+        
+        // append to document
+        $('body').append($back);
 
+        function setOrientation(orientation) {
+            if((orientation == 0) || (orientation == 180)) {
+                $box.removeClass('comic-viewer-box-landscape').addClass('comic-viewer-box-portrait');
+            } else {
+                $box.removeClass('comic-viewer-box-portrait').addClass('comic-viewer-box-landscape');
+            }
+        }
+        
         var rawPanels = getRawPanels(this.data('panels'));
 
         function setPanel(panel) {
@@ -57,7 +85,6 @@
                 $viewport.css({
                     width: scale * width,
                     height: scale * height,
-                    marginTop: -scale * height/2
                 });
                 
                 $image.css({
@@ -93,7 +120,7 @@
         }
         
         function destroy() {
-            $frame.remove();
+            $back.remove();
             $(document).unbind('keydown', keydown);
             $(window).unbind('resize', refreshPanel);
         }
@@ -105,13 +132,24 @@
             if (event.which == 1) {
                 setPanel(currentPanel + (event.shiftKey ? -1 : 1)); 
             }
-            event.stopPropagation();
         });
         
-        $frame.click(function () {
-            destroy();
+        $navPrev.click(function (event) {
+            setPanel(currentPanel - 1);
+        });
+
+        $navNext.click(function (event) {
+            setPanel(currentPanel + 1);
         });
         
+        $center.click(function (event) {
+            if(event.target == this) {
+                destroy();
+            }
+        });
+        
+        
+        setOrientation(90);
         // add short delay to allow css transition to synchronize
         setTimeout(refreshPanel, 50);
         return this;

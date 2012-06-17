@@ -64,6 +64,10 @@
                 -webkit-box-shadow: 0 0 8px #000;
                 box-shadow: 0 0 8px #000;
             }
+
+            .comic-viewer-image {
+                position: absolute;
+            }
             
             .comic-viewer-nav-next,
             .comic-viewer-nav-prev {
@@ -77,7 +81,7 @@
             
             .comic-viewer-nav-next {
                 right: 0px;
-                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAwCAYAAAALiLqjAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGCSURBVHjaYvz//z8DLQFAADEx0BgABBDNLQAIIGQLYmlhAUAAMYDiAIp/AXEsEp8qGCCAkDn/oZZEUNMCgABCt4DqlgAEEDYLqGoJQADhsoBqlgAEEDInGIclwZRYABBA6AJUtwQggLAJUtUSgADCJeGPwxJ/Ui0ACCB8klSxBCCACCmg2BKAACJGEUWWAAQQsV71wmGJFyG9AAFESoSRZQlAAJGa7Ei2BCCAyMk8JFkCEEDkFgHYLPmGzRKAAKKkICPKEoAAorQ4JmgJQAAxUqHZIg7EL9DE3gKxNhC/BAggSlsVXlgM/w3EcSDDQRyAAKJ28GCkJoAAoqnhIAwQQDTPBwABRPOcDBBApBhOVqkKEEA0NRyEAQKI5vUBQADRvEYDCCCa18kAAYRLgmpNF4AAonm7CCCAaN6yAwggmrdNAQKI5q1rgACief8AIIBo3sMBCCCa99EAAojmvUyAAELmUN1wEAYIIGpU+ngBQADRfCgBIIBobgFAANHcAoAAAwAq5m2wJK1y9gAAAABJRU5ErkJggg==);
+                background-image: url(next.png);
             }
             
             .comic-viewer-box-portrait .comic-viewer-nav-next {
@@ -91,7 +95,7 @@
             
             .comic-viewer-nav-prev {
                 left: 0px;
-                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAwCAYAAAALiLqjAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAF6SURBVHjaYvz//z8DLQFAADEx0BgABBDNLQAIIFpZEAtjAAQQAygOqIxjgfgXjA8QQNQ2PAJq+H+YGEAA0cpwuAUAAUQrw+EWAAQQrQyHWwAQQJQaHozD8GCYGoAAoqnhIAwQQDQ1HIQBAogcw/1xGO6PTT1AANHUcBAGCCCaGg7CAAFEU8NBGCCAiDHcC4fhXsQ4DiCAaGo4CAMEEE0NB2GAAKKp4SAMEEC4DP9GDcNBGCCAaGo4CAMEEE0NB2GAAGKENlvEgfgqEAuj1a0SQPySksoZIIBglT7IkDgg/o0m/wKIvSixACCAaJZ6YBgggGiaREEYIIBong8AAojmORkggGhWisIwQADRtKgGYYAAonl9ABBANK/RAAKI5nUyQADRtMkCwgABRPN2EUAA0bxlBxBANG+bAgQQzVvXAAFE8/4BQADRvIcDEEA076MBBBDNe5kAAcRCgz7yYmQOQAAx0nqsAiCAaD6UABBANLcAIIBobgFAgAEAkrAlQqVK45cAAAAASUVORK5CYII=);
+                background-image: url(prev.png);
             }
             
             .comic-viewer-box-portrait .comic-viewer-nav-prev {
@@ -102,19 +106,29 @@
                 top: 0px;
                 height: 100%;
             }
+            
+            .comic-viewer-viewport,
+            .comic-viewer-image {
+                width: 0;
+                height: 0;
+                -o-transition: top 0.4s, left 0.4s, width 0.4s, height 0.4s;
+                -moz-transition: top 0.4s, left 0.4s, width 0.4s, height 0.4s;
+                -webkit-transition: top 0.4s, left 0.4s, width 0.4s, height 0.4s;
+                transition: top 0.4s, left 0.4s, width 0.4s, height 0.4s;
+             }
         </style>
     </head>
     <body>
         <!--<img id="comic" data-panels="0,0,199,209;190,0,199,209;380,0,389,409" src="fossils.png" width="770" height="1010"/>-->
         <img id="comic" data-panels="20,4,190,200,196,206,2,2" src="fossils.png" width="770" height="1010"/>
-        <div class="comic-viewer-back"><div class="comic-viewer-center">
+        <!--<div class="comic-viewer-back"><div class="comic-viewer-center">
             <span class="comic-viewer-box comic-viewer-box-landscape">
                 <div class="comic-viewer-viewport">
-                    <img src="fossils.png" width="770" height="1010"/>
+                    <img class="comic-viewer-image" src="fossils.png" width="770" height="1010"/>
                 </div>
                 <a class="comic-viewer-nav-prev"></a>
                 <a class="comic-viewer-nav-next"></a>
             </span>
-        </div></div>
+        </div></div>-->
     </body>
 </html>
