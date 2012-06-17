@@ -28,7 +28,6 @@
         
         // create elements
         var $back = $('<div class="comic-viewer-back"/>'),
-            $center = $('<div class="comic-viewer-center"/>'),
             $box = $('<span class="comic-viewer-box"/>'),
             $viewport =  $('<div class="comic-viewer-viewport"/>'),
             $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')),
@@ -37,14 +36,12 @@
         
         // build dom structure
         $back.append(
-            $center.append(
-                $box.append(
-                    $viewport.append(
-                        $image
-                    ),
-                    $navPrev,
-                    $navNext
-                )
+            $box.append(
+                $viewport.append(
+                    $image
+                ),
+                $navPrev,
+                $navNext
             )
         );
         
@@ -76,7 +73,7 @@
                 setLandscape(landscape);
                 
                 var availableWindowWidth = window.innerWidth - 64 - (landscape ? 64 : 0);
-                var availableWindowHeight = window.innerHeight - 64 - (landscape ? 0 : 48);
+                var availableWindowHeight = window.innerHeight - 64 - (landscape ? 0 : 96);
          
                 // choose the smallest scale factor
                 var scale;
@@ -90,9 +87,13 @@
                     scale = Math.floor(scale * 4) / 4; // optimise scaling ratios to for best image quality
                 }
                 
+                $box.css({
+                    marginTop: -Math.floor(scale * height / 2)
+                });
+                
                 $viewport.css({
                     width: scale * width,
-                    height: scale * height,
+                    height: scale * height
                 });
                 
                 $image.css({
@@ -150,7 +151,7 @@
             setPanel(currentPanel + 1);
         });
         
-        $center.click(function (event) {
+        $back.click(function (event) {
             if(event.target == this) {
                 destroy();
             }
