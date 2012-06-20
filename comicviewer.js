@@ -31,8 +31,8 @@
             $viewport =  $('<div class="comic-viewer-viewport"/>'),
             $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')),
             $nav = $('<div class="comic-viewer-nav"/>'),
-            $navPrev = $('<a class="comic-viewer-nav-prev"/>'),
-            $navNext = $('<a class="comic-viewer-nav-next"/>');
+            $navPrev = $('<a class="comic-viewer-nav-prev"><span class="comic-viewer-arrow-prev"/></a>'),
+            $navNext = $('<a class="comic-viewer-nav-next"><span class="comic-viewer-arrow-next"/></a>');
         
         // build dom structure
         $box.append(
@@ -78,24 +78,27 @@
          
              
                 var landscape = $box.hasClass('comic-viewer-landscape');
-                var availableWindowWidth = window.innerWidth - 64 - (landscape ? 64 : 0);
-                var availableWindowHeight = window.innerHeight - 64 - (landscape ? 0 : 96);
+                var availableWidth = $box.width() * (landscape ? 0.8 : 1); // These factors match those in the stylesheet
+                var availableHeight = $box.height() * (landscape ? 1 : 0.85);
          
                 // choose the smallest scale factor
                 var scale;
-                if (availableWindowWidth / width > availableWindowHeight / height) {
-                    scale = availableWindowHeight / height;
+                if (availableWidth / width > availableHeight / height) {
+                    scale = availableHeight / height;
                 } else {
-                    scale = availableWindowWidth / width;
+                    scale = availableWidth / width;
                 }
-                
+
+                var paddingFactor = 0.9;
+                scale *= paddingFactor;
                 if(scale > 1) {
                     scale = Math.floor(scale * 4) / 4; // optimise scaling ratios to for best image quality
                 }
                                 
                 $viewport.css({
                     width: scale * width,
-                    height: scale * height
+                    height: scale * height,
+                    marginTop: Math.floor((availableHeight - scale * height) / 2)
                 });
                 
                 $image.css({
@@ -110,7 +113,8 @@
             }
         }
         
-        function refreshPanel() {
+        function refresh() {
+            center();
             setPanel(currentPanel);
         }
         
@@ -154,7 +158,7 @@
             $box.detach();
             $(document).off('keydown', keydown);
             $(window)
-                .off('resize', refreshPanel)
+                .off('resize', refresh)
                 .off('gesturechange', center)
                 .off('scroll', center)
                 .off('orientationchange', rotate);
@@ -164,15 +168,14 @@
             // add short delay to allow css transition to synchronize
             $(document).on('keydown', keydown);
             $(window)
-                .on('resize', refreshPanel)
+                .on('resize', refresh)
                 .on('gesturechange', center)
                 .on('scroll', center)
                 .on('orientationchange', rotate);
 
-            center();
             rotate();
             $('body').append($box);
-            setTimeout(refreshPanel, 50);
+            setTimeout(refresh, 50);
         }
         
         this.click(show);

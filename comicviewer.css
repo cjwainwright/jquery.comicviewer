@@ -10,15 +10,6 @@
     width: 100%;
 }
 
-.comic-viewer-portrait .comic-viewer-nav {
-    height: 10%;
-    background-color: #77F;
-}
-
-.comic-viewer-landscape .comic-viewer-nav {
-    height: 100%;
-}
-
 .comic-viewer-nav-prev,
 .comic-viewer-nav-next {
     display: block;
@@ -26,33 +17,85 @@
     width: 10%;
     background-position: center center;
     background-repeat: no-repeat;
-}
-
-.comic-viewer-landscape .comic-viewer-nav-prev,
-.comic-viewer-landscape .comic-viewer-nav-next {
-    background-size: 100% auto;
-    background-color: #77F;
-}
-
-.comic-viewer-portrait .comic-viewer-nav-prev,
-.comic-viewer-portrait .comic-viewer-nav-next {
-    background-size: auto 100%;
+    font-size: 100%;
 }
 
 .comic-viewer-nav-next {
     float: right;
-    background-image: url('next.png'); /*TODO - svg image*/
 }
 
 .comic-viewer-nav-prev {
     float: left;
-    background-image: url('prev.png');
+}
+
+.comic-viewer-arrow-next,
+.comic-viewer-arrow-prev {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.comic-viewer-arrow-next {
+    background-image: url(next.png);
+}
+
+.comic-viewer-arrow-prev {
+    background-image: url(prev.png);
+}
+
+
+.comic-viewer-portrait .comic-viewer-nav {
+    height: 15%;
+    background-color: #424242;
+    background-image: linear-gradient(bottom, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -o-linear-gradient(bottom, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -moz-linear-gradient(bottom, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -webkit-linear-gradient(bottom, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -ms-linear-gradient(bottom, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+}
+
+.comic-viewer-landscape .comic-viewer-nav {
+    height: 100%;
+}
+
+.comic-viewer-landscape .comic-viewer-nav-prev {
+    background-color: #424242;
+    background-image: linear-gradient(left, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -o-linear-gradient(left, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -moz-linear-gradient(left, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -webkit-linear-gradient(left, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -ms-linear-gradient(left, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+}
+
+.comic-viewer-landscape .comic-viewer-nav-next {
+    background-color: #424242;
+    background-image: linear-gradient(right, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -o-linear-gradient(right, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -moz-linear-gradient(right, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -webkit-linear-gradient(right, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    background-image: -ms-linear-gradient(right, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+}
+
+.comic-viewer-portrait .comic-viewer-arrow-prev,
+.comic-viewer-portrait .comic-viewer-arrow-next {
+    background-size: auto 100%;
+}
+
+.comic-viewer-landscape .comic-viewer-arrow-prev,
+.comic-viewer-landscape .comic-viewer-arrow-next {
+    background-size: 100% auto;
 }
 
 .comic-viewer-viewport {
     position: relative;
     margin: 0 auto;
     overflow: hidden;
+    -o-box-shadow: 0 0 3em #000;
+    -moz-box-shadow: 0 0 3em #000;
+    -webkit-box-shadow: 0 0 3em #000;
+    box-shadow: 0 0 3em #000;
 }
 
 .comic-viewer-image {
