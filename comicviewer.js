@@ -27,65 +27,57 @@
         var currentPanel = 0;
         
         // create elements
-        var $back = $('<div class="comic-viewer-back"/>'),
-            $center = $('<span class="comic-viewer-center"/>'),
-            $box = $('<span class="comic-viewer-box"/>'),
+        var $box = $('<span class="comic-viewer comic-viewer-portrait"/>'),
             $viewport =  $('<div class="comic-viewer-viewport"/>'),
             $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')),
+            $nav = $('<div class="comic-viewer-nav"/>'),
             $navPrev = $('<a class="comic-viewer-nav-prev"/>'),
             $navNext = $('<a class="comic-viewer-nav-next"/>');
         
         // build dom structure
-        $back.append(
-            $center.append(
-                $box.append(
-                    $viewport.append(
-                        $image
-                    ),
-                    $navPrev,
-                    $navNext
-                )
+        $box.append(
+            $nav.append(
+                $navPrev,
+                $navNext
+            ),
+            $viewport.append(
+                $image
             )
         );
-        
-        // append to document
-        $('body').append($back);
-
-        function setLandscape(landscape) {
-            if(landscape) {
-                $box.removeClass('comic-viewer-box-portrait').addClass('comic-viewer-box-landscape');
-            } else {
-                $box.removeClass('comic-viewer-box-landscape').addClass('comic-viewer-box-portrait');
-            }
-        }
         
         var rawPanels = getRawPanels(this.data('panels'));
 
         function center() {
-            $center.css({
+            $box.css({
                 top: window.pageYOffset,
                 left: window.pageXOffset,
                 height: window.innerHeight,
                 width: window.innerWidth
             });
         }
-        
+
+        function rotate() {
+            var orientation = window.orientation;
+            if ((orientation == 90) || (orientation == -90)) {
+                $box.removeClass('comic-viewer-portrait').addClass('comic-viewer-landscape');
+            } else {
+                $box.removeClass('comic-viewer-landscape').addClass('comic-viewer-portrait');
+            }
+        }
+                
         function setPanel(panel) {
             var rawPanel = rawPanels[panel];
             if(rawPanel) {
                 $navPrev.css({visibility: (panel == 0) ? 'hidden' : 'visible'});
                 $navNext.css({visibility: (panel == rawPanels.length - 1) ? 'hidden' : 'visible'});
                 
-                center();
-                            
                 var left = rawPanel[0],
                     top = rawPanel[1],
                     width = rawPanel[2],
                     height = rawPanel[3];
          
-                var landscape = window.innerWidth > window.innerHeight;
-                setLandscape(landscape);
-                
+             
+                var landscape = $box.hasClass('comic-viewer-landscape');
                 var availableWindowWidth = window.innerWidth - 64 - (landscape ? 64 : 0);
                 var availableWindowHeight = window.innerHeight - 64 - (landscape ? 0 : 96);
          
@@ -100,11 +92,7 @@
                 if(scale > 1) {
                     scale = Math.floor(scale * 4) / 4; // optimise scaling ratios to for best image quality
                 }
-                
-                $box.css({
-                    marginTop: -Math.floor(scale * height / 2)
-                });
-                
+                                
                 $viewport.css({
                     width: scale * width,
                     height: scale * height
@@ -142,17 +130,6 @@
             }
         }
         
-        function destroy() {
-            $back.remove();
-            $(document).unbind('keydown', keydown);
-            $(window).unbind('resize', refreshPanel)
-                .unbind('scroll', center);
-        }
-        
-        $(document).bind('keydown', keydown);
-        $(window).bind('resize', refreshPanel)
-            .bind('scroll', center);
-        
         $viewport.click(function (event) {
             if (event.which == 1) {
                 setPanel(currentPanel + (event.shiftKey ? -1 : 1)); 
@@ -167,14 +144,39 @@
             setPanel(currentPanel + 1);
         });
         
-        $back.click(function (event) {
+        $box.click(function (event) {
             if(event.target == this) {
                 destroy();
             }
         });
+
+        function destroy() {
+            $box.detach();
+            $(document).off('keydown', keydown);
+            $(window)
+                .off('resize', refreshPanel)
+                .off('gesturechange', center)
+                .off('scroll', center)
+                .off('orientationchange', rotate);
+        }
         
-        // add short delay to allow css transition to synchronize
-        setTimeout(refreshPanel, 50);
+        function show() {
+            // add short delay to allow css transition to synchronize
+            $(document).on('keydown', keydown);
+            $(window)
+                .on('resize', refreshPanel)
+                .on('gesturechange', center)
+                .on('scroll', center)
+                .on('orientationchange', rotate);
+
+            center();
+            rotate();
+            $('body').append($box);
+            setTimeout(refreshPanel, 50);
+        }
+        
+        this.click(show);
+        
         return this;
     };
 })(jQuery);
