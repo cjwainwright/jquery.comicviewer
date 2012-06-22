@@ -68,8 +68,17 @@
         function setPanel(panel) {
             var rawPanel = rawPanels[panel];
             if(rawPanel) {
-                $navPrev.css({visibility: (panel == 0) ? 'hidden' : 'visible'});
-                $navNext.css({visibility: (panel == rawPanels.length - 1) ? 'hidden' : 'visible'});
+                if (panel == 0) {
+                    $navPrev.addClass('comic-viewer-nav-disabled');
+                } else {
+                    $navPrev.removeClass('comic-viewer-nav-disabled');
+                }
+            
+                if (panel == rawPanels.length - 1) {
+                    $navNext.addClass('comic-viewer-nav-disabled');
+                } else {
+                    $navNext.removeClass('comic-viewer-nav-disabled');
+                }
                 
                 var left = rawPanel[0],
                     top = rawPanel[1],

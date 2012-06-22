@@ -14,7 +14,6 @@
 .comic-viewer-nav-next {
     display: block;
     height: 100%;
-    width: 10%;
     background-position: center center;
     background-repeat: no-repeat;
     font-size: 100%;
@@ -38,13 +37,17 @@
 }
 
 .comic-viewer-arrow-next {
-    background-image: url(next.png);
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJ5ZXMiPz4KCjxzdmcgdmVyc2lvbj0iMS4xIiAKICAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgCiAgICB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIKICAgIHZpZXdCb3g9IjAsMCw2MCw4MCI+CiAgICA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNMTUgMTUgTDIwIDEwIEw1MCA0MCBMMjAgNzAgTDE1IDY1IEw0MCA0MCBaIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KPC9zdmc+Cgo=');
 }
 
 .comic-viewer-arrow-prev {
-    background-image: url(prev.png);
+    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJ5ZXMiPz4KCjxzdmcgdmVyc2lvbj0iMS4xIiAKICAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgCiAgICB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIKICAgIHZpZXdCb3g9IjAsMCw2MCw4MCI+CiAgICA8cGF0aCBmaWxsPSIjZmZmZmZmIiBkPSJNNDUgMTUgTDQwIDEwIEwxMCA0MCBMNDAgNzAgTDQ1IDY1IEwyMCA0MCBaIiBmaWxsLXJ1bGU9Im5vbnplcm8iPjwvcGF0aD4KPC9zdmc+Cgo=');
 }
 
+.comic-viewer-nav-disabled  .comic-viewer-arrow-next,
+.comic-viewer-nav-disabled  .comic-viewer-arrow-prev {
+    display: none;
+}
 
 .comic-viewer-portrait .comic-viewer-nav {
     height: 15%;
@@ -54,6 +57,7 @@
     background-image: -moz-linear-gradient(bottom, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
     background-image: -webkit-linear-gradient(bottom, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
     background-image: -ms-linear-gradient(bottom, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    border-top: solid 1px #000;
 }
 
 .comic-viewer-landscape .comic-viewer-nav {
@@ -67,6 +71,7 @@
     background-image: -moz-linear-gradient(left, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
     background-image: -webkit-linear-gradient(left, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
     background-image: -ms-linear-gradient(left, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    border-right: solid 1px #000;
 }
 
 .comic-viewer-landscape .comic-viewer-nav-next {
@@ -76,6 +81,17 @@
     background-image: -moz-linear-gradient(right, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
     background-image: -webkit-linear-gradient(right, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
     background-image: -ms-linear-gradient(right, #262626 11%, #3D3D3D 50%, #424242 50%, #8A8A8A 89%);
+    border-left: solid 1px #000;
+}
+
+.comic-viewer-portrait .comic-viewer-nav-next,
+.comic-viewer-portrait .comic-viewer-nav-prev {
+    width: 15%;
+}
+
+.comic-viewer-landscape .comic-viewer-nav-next,
+.comic-viewer-landscape .comic-viewer-nav-prev {
+    width: 10%;
 }
 
 .comic-viewer-portrait .comic-viewer-arrow-prev,
