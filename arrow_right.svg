@@ -4,6 +4,16 @@
     xmlns="http://www.w3.org/2000/svg" 
     xmlns:xlink="http://www.w3.org/1999/xlink"
     viewBox="0,0,60,80">
-    <path fill="#ffffff" d="M15 15 L20 10 L50 40 L20 70 L15 65 L40 40 Z" fill-rule="nonzero"></path>
+    <defs>
+        <filter id="inner-shadow">
+            <feOffset dx="0" dy="1" />
+            <feGaussianBlur stdDeviation="2" result="offset-blur" />
+            <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
+            <feFlood flood-color="black" flood-opacity="1" result="color" />
+            <feComposite operator="in" in="color" in2="inverse" result="shadow" />
+            <feComposite operator="over" in="shadow" in2="SourceGraphic" />
+        </filter>
+    </defs>
+    <path fill="#ffffff" d="M15 15 L20 10 L50 40 L20 70 L15 65 L40 40 Z" fill-rule="nonzero" stroke="#333333" stroke-width="0.3" filter='url(#inner-shadow)'></path>
 </svg>
 

@@ -164,6 +164,7 @@
         });
 
         function destroy() {
+            currentPanel = 0;
             $box.detach();
             $(document).off('keydown', keydown);
             $(window)
