@@ -9,7 +9,9 @@ Usage
 Add a `data-panels` attribute to your image. The value of the attribute represents the position and size of each panel,
 separated by semi-colons. The format for each panel is `left,top,width,height` measured in pixels. For example
 
-    <img id="comic" data-panels="0,0,200,300;200,0,300,300" src="comic.png" width="500" height="300"/>
+```html
+<img id="comic" data-panels="0,0,200,300;200,0,300,300" src="comic.png" width="500" height="300"/>
+```
     
 Here we have specified 2 panels the first is at left=0px, top=0px, width=200px, height=300px and the second at left=200px, top=0px, width=300px, height=300px.
 More panels can be specified as desired.
@@ -30,6 +32,8 @@ These panel definitions can be mixed using both formats in one semi-colon separa
 
 To create the comic viewer, simply initialise the jquery plugin on the comic image.
 
-    $('#comic').comicViewer()
+```js
+$('#comic').comicViewer()
+```
     
 Clicking on the image will now show the comic viewer, allowing you to step through the comic panel by panel.
