@@ -7,8 +7,8 @@
         <script>
             $(document).ready(function () {
                 window.scrollTo(0, 1);
-                $('#comic1').comicViewer();
-                $('#comic2').comicViewer();
+                $('#comic1').click(function(){ $(this).comicViewer().show(); });
+                $('#comic2').click(function(){ $(this).comicViewer().show(); });;
             });
         </script>
         <style>

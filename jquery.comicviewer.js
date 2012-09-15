@@ -24,24 +24,27 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 (function ($) {
     function getRawPanels(panelData) {
         var rawPanels = [];
-        $.each(panelData.split(';'), function (index, value) {
-            var pattern = value.split(',');
-            if (pattern.length == 4) {
-                rawPanels.push(pattern);
-            } else if (pattern.length == 8) {
-                var count = pattern[0] - 0,
-                    countX = pattern[1] - 0,
-                    stepX = pattern[2] - 0,
-                    stepY = pattern[3] - 0,
-                    width = pattern[4] - 0,
-                    height = pattern[5] - 0,
-                    offsetX = pattern[6] - 0,
-                    offsetY = pattern[7] - 0;
-                for(var n = 0; n < count; n++) {
-                    rawPanels.push([stepX * (n % countX) + offsetX, stepY * Math.floor(n / countX) + offsetY, width, height]);
+        if(panelData)
+        {
+            $.each(panelData.split(';'), function (index, value) {
+                var pattern = value.split(',');
+                if (pattern.length == 4) {
+                    rawPanels.push(pattern);
+                } else if (pattern.length == 8) {
+                    var count = pattern[0] - 0,
+                        countX = pattern[1] - 0,
+                        stepX = pattern[2] - 0,
+                        stepY = pattern[3] - 0,
+                        width = pattern[4] - 0,
+                        height = pattern[5] - 0,
+                        offsetX = pattern[6] - 0,
+                        offsetY = pattern[7] - 0;
+                    for(var n = 0; n < count; n++) {
+                        rawPanels.push([stepX * (n % countX) + offsetX, stepY * Math.floor(n / countX) + offsetY, width, height]);
+                    }
                 }
-            }
-        });
+            });
+        }
         return rawPanels;
     }
 
@@ -52,11 +55,11 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         // create elements
         var $box = $('<span class="comic-viewer comic-viewer-portrait"/>'),
             $viewport =  $('<div class="comic-viewer-viewport"/>'),
-            $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')),
+            $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')), // note we override any global styles on imagegs which affect their width/height by setting them back to auto
             $nav = $('<div class="comic-viewer-nav"/>'),
             $navPrev = $('<a class="comic-viewer-nav-prev"><span class="comic-viewer-arrow-prev"/></a>'),
             $navNext = $('<a class="comic-viewer-nav-next"><span class="comic-viewer-arrow-next"/></a>');
-        
+            
         // build dom structure
         $box.append(
             $nav.append(
@@ -136,8 +139,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 $image.css({
                     left: -left * scale, 
                     top: -top * scale,
-                    width: that.width() * scale,
-                    height: that.height() * scale
+                    width: that.attr("width") * scale,
+                    height: that.attr("height") * scale
                 });
                 currentPanel = panel;
             } else {
@@ -198,7 +201,6 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         }
         
         function show() {
-            // add short delay to allow css transition to synchronize
             $(document).on('keydown', keydown);
             $(window)
                 .on('resize', refresh)
@@ -208,11 +210,13 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
             rotate();
             $('body').append($box);
+
+            // add short delay before refreshing to allow css transition to synchronize
             setTimeout(refresh, 50);
         }
         
-        this.click(show);
-        
-        return this;
+        return {
+            show: show
+        };
     };
 })(jQuery);

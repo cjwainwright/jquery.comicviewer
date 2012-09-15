@@ -24,6 +24,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 .comic-viewer {
     position: absolute;
     background-color: rgba(0,0,0,0.8);
+    z-index: 1000;
 }
 
 .comic-viewer-nav {
@@ -139,6 +140,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 .comic-viewer-image {
     position: absolute;
+    max-width: none !important;
+    max-height: none !important;
 }
 
 .comic-viewer-viewport,
