@@ -29,7 +29,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             $.each(panelData.split(';'), function (index, value) {
                 var pattern = value.split(',');
                 if (pattern.length == 4) {
-                    rawPanels.push(pattern);
+                    rawPanels.push($.map(pattern, function (v) { return v - 0; }));
                 } else if (pattern.length == 8) {
                     var count = pattern[0] - 0,
                         countX = pattern[1] - 0,
@@ -46,6 +46,30 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             });
         }
         return rawPanels;
+    }
+    
+    function within(value, min, max) {
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        }
+        return value;
+    }
+    
+    function index(arr, fn) {
+        for (var i = 0, c = arr.length; i < c; i++) {
+            if (fn(arr[i])) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    function findPanelByCoord(rawPanels, x, y) {
+        return index(rawPanels, function (panel) {
+            return ((panel[0] <= x) && (panel[1] <= y) && (x <= panel[0] + panel[2]) && (y <= panel[1] + panel[3]));
+        });
     }
 
     $.fn.comicViewer = function () {
@@ -95,15 +119,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var rawPanel = rawPanels[panel];
             if(rawPanel) {
                 if (panel == 0) {
-                    $navPrev.addClass('comic-viewer-nav-disabled');
+                    $navPrev.addClass('comic-viewer-nav-end');
                 } else {
-                    $navPrev.removeClass('comic-viewer-nav-disabled');
+                    $navPrev.removeClass('comic-viewer-nav-end');
                 }
             
                 if (panel == rawPanels.length - 1) {
-                    $navNext.addClass('comic-viewer-nav-disabled');
+                    $navNext.addClass('comic-viewer-nav-end');
                 } else {
-                    $navNext.removeClass('comic-viewer-nav-disabled');
+                    $navNext.removeClass('comic-viewer-nav-end');
                 }
                 
                 var left = rawPanel[0],
@@ -127,7 +151,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 var paddingFactor = 0.9;
                 scale *= paddingFactor;
                 if(scale > 1) {
-                    scale = Math.floor(scale * 4) / 4; // TODO - optimise scaling ratios to for best image quality
+                    scale = Math.floor(scale * 4) / 4; // TODO - optimise scaling ratios for best image quality
                 }
                                 
                 $viewport.css({
@@ -146,6 +170,20 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             } else {
                 destroy();
             }
+        }
+        
+        function getPanel(data) {
+            if (data) {
+                if (data.panel != null) {
+                    return within(data.panel, 0, rawPanels.length - 1);
+                } else if ((data.x != null) && (data.y != null)) {
+                    var panel = findPanelByCoord(rawPanels, data.x, data.y);
+                    if (panel >= 0) {
+                        return panel;
+                    }
+                }
+            }
+            return 0;
         }
         
         function refresh() {
@@ -199,8 +237,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 .off('scroll', center)
                 .off('orientationchange', rotate);
         }
-        
-        function show() {
+                
+        function show(init) {
+            currentPanel = getPanel(init);
+            
             $(document).on('keydown', keydown);
             $(window)
                 .on('resize', refresh)

@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="yes"?>
+
+<svg version="1.1" 
+    xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0,0,60,80">
+    <defs>
+        <filter id="inner-shadow">
+            <feOffset dx="0" dy="1" />
+            <feGaussianBlur stdDeviation="2" result="offset-blur" />
+            <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse" />
+            <feFlood flood-color="black" flood-opacity="1" result="color" />
+            <feComposite operator="in" in="color" in2="inverse" result="shadow" />
+            <feComposite operator="over" in="shadow" in2="SourceGraphic" />
+        </filter>
+    </defs>
+    <path fill="#ffffff" d="M5 20 L10 15 L30 35 L50 15 L55 20 L35 40 L55 60 L50 65 L30 45 L10 65 L5 60 L25 40 Z" fill-rule="nonzero" stroke="#333333" stroke-width="0.3" filter='url(#inner-shadow)'></path>
+</svg>
+
