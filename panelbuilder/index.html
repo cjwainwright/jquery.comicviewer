@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf8"/>
+        <title>Comic Viewer Panel Builder</title>
+        <link rel="stylesheet" href="panelbuilder.css" />
+    </head>
+    <body>
+        <header>
+            <h1>Comic Viewer Panel Builder</h1>
+            <ol class="instructions" style="display: none;">
+                <li>Drag your comic image file onto the workspace below to begin.</li>
+                <li>Use the Panel tool to drag across the dimensions of the first panel.</li>
+                <li>Use the Selector tool to tweak your panel, adjusting its size and position.</li>
+                <li>Repeat the process until you have created all your panels.</li>
+                <li>Your finished panel data is now available to copy and use with the comic viewer.</li>
+            </ol>
+        </header>
+        <main>
+            <aside id="toolbar" class="toolbar">
+                <ul>
+                    <li>Panel</li>
+                    <li>Select</li>
+                </ul>
+            </aside>
+            <section class="workspace">
+                <div id="workspace" class="workspace-wrapper">
+                    <img id="comic" class="comic" src="comic.png"/>
+                </div>
+            </section>
+            <aside id="properties" class="properties">
+                <h2>Panel</h2>
+            </aside>
+        </main>
+        <footer>
+            <textarea id="output" class="output"></textarea>
+        </footer>
+        <script src="panelbuilder.js"></script>
+        
+    </body>
+</html>
