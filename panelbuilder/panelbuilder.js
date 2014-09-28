@@ -119,6 +119,23 @@
         return data;
     };
     
+    PanelSerialiser.prototype.deserialisePanels = function (data, currentPanels) {
+        var panels = data.split(';').map(function (panelData) {
+            return panelData.split(',').map(function (val) {
+                return parseInt(val)
+            });
+        });
+        
+        currentPanels.length = panels.length;
+        panels.forEach(function (panel, index) {
+            var currentPanel = currentPanels[index];
+            currentPanel.left = panel[0];
+            currentPanel.top = panel[1];
+            currentPanel.width = panel[2];
+            currentPanel.height = panel[3];
+        });
+    };
+    
     // model
 
     function PanelBuilderModel() {
@@ -193,6 +210,7 @@
                             return serialiser.serialisePanels($scope.panels);
                         },
                         set: function (value) {
+                            serialiser.deserialisePanels(value, $scope.panels);
                         }
                     });                    
                 }]
