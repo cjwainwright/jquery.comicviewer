@@ -1,41 +1,26 @@
 <!doctype html>
-<html>
+<html ng-app="panelbuilder">
     <head>
         <meta charset="utf8"/>
         <title>Comic Viewer Panel Builder</title>
         <link rel="stylesheet" href="panelbuilder.css" />
+        <script src="angular.js"></script>
+        <script src="panelbuilder.js"></script>
     </head>
-    <body>
+    <body ng-controller="MainCtrl">
         <header>
             <h1>Comic Viewer Panel Builder</h1>
-            <ol class="instructions" style="display: none;">
-                <li>Drag your comic image file onto the workspace below to begin.</li>
-                <li>Use the Panel tool to drag across the dimensions of the first panel.</li>
-                <li>Use the Selector tool to tweak your panel, adjusting its size and position.</li>
-                <li>Repeat the process until you have created all your panels.</li>
-                <li>Your finished panel data is now available to copy and use with the comic viewer.</li>
-            </ol>
         </header>
         <main>
-            <aside id="toolbar" class="toolbar">
-                <ul>
-                    <li>Panel</li>
-                    <li>Select</li>
-                </ul>
-            </aside>
+            <tool-selector tool-selector="model.toolSelector"></tool-selector>
             <section class="workspace">
-                <div id="workspace" class="workspace-wrapper">
-                    <img id="comic" class="comic" src="comic.png"/>
-                </div>
+                <panel-editor model="model"></panel-editor>
             </section>
-            <aside id="properties" class="properties">
-                <h2>Panel</h2>
-            </aside>
+            <panel-properties class="properties" panel="model.panelCollection.selectedPanel">
+            </panel-properties>
         </main>
         <footer>
-            <textarea id="output" class="output"></textarea>
+            <panel-serialiser panels="model.panelCollection.panels"></panel-serialiser>
         </footer>
-        <script src="panelbuilder.js"></script>
-        
     </body>
 </html>
