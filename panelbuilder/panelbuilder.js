@@ -109,6 +109,38 @@
                 var comic = $element.find('img')[0];
                 $scope.comic = comic; //TODO - better way to get the comic width and height to the snapper
 
+                $scope.toolHandlers = {
+                    'select': {
+                        mouseDown: function (x, y) {
+                            $scope.selectPanel(x, y);
+                        },
+                        mouseMove: function (x, y) {
+                        },
+                        mouseUp: function (x, y) {
+                        }
+                    },
+                    'addpanel': {
+                        mouseDown: function (x, y) {
+                            $scope.createPanel(x, y);
+                        },
+                        mouseMove: function (x, y) {
+                            $scope.dragPanel(x, y);
+                        },
+                        mouseUp: function (x, y) {
+                            $scope.dragPanel(x, y);
+                            $scope.finalisePanel();
+                        }
+                    },
+                    'null': {
+                        mouseDown: function (x, y) {
+                        },
+                        mouseMove: function (x, y) {
+                        },
+                        mouseUp: function (x, y) {
+                        }
+                    }
+                };
+                
                 function getCoords(event) {
                     var rect = comic.getBoundingClientRect();
                     var x = event.clientX - rect.left;
@@ -121,17 +153,17 @@
 
                 function mouseDown(event) {
                     var {x, y} = getCoords(event);
-                    $scope.createPanel(x, y);
+                    $scope.getToolHandler().mouseDown(x, y);
                 }
                 
                 function mouseMove(event) {
                     var {x, y} = getCoords(event);
-                    $scope.dragPanel(x, y);
+                    $scope.getToolHandler().mouseMove(x, y);
                 }
                 
                 function mouseUp(event) {
-                    mouseMove(event);
-                    $scope.finalisePanel();
+                    var {x, y} = getCoords(event);
+                    $scope.getToolHandler().mouseUp(x, y);
                 }
                 
                 jqExt.onDrag($scope, $element, mouseDown, mouseMove, mouseUp);
@@ -140,6 +172,22 @@
                 $scope.reset = function () {
                     $scope.model.panelCollection.clear();
                 };
+                
+                $scope.getToolHandler = function  () {
+                    var id = $scope.model.toolSelector.selectedTool.id;
+                    return $scope.toolHandlers[id] || $scope.toolHandlers.null;
+                };
+                
+                $scope.selectPanel = function (x, y) {
+                    $scope.model.panelCollection.panels.forEach(function (panel) {
+                        if((panel.left <= x) &&
+                           (panel.top <= y) &&
+                           (x <= panel.left + panel.width) &&
+                           (y <= panel.top + panel.height)) {
+                            $scope.model.panelCollection.selectedPanel = panel;
+                        }
+                    });
+                }
                 
                 $scope.createPanel = function (x, y) { 
                     var snapper = $scope.model.panelSnapper;
