@@ -143,6 +143,54 @@
         this.panelCollection = new PanelCollection();
         this.panelSnapper = new PanelSnapper(10);
     }
+
+    // angular extensions
+    
+    function onDrag($scope, $document, $element, mouseDown, mouseMove, mouseUp) {
+                
+        $element.on('mousedown', function (event) {
+            event.preventDefault();
+                
+            $scope.$apply(function(){
+                mouseDown(event);
+            });
+            
+            function _mouseMove(event) {
+                $scope.$apply(function(){
+                    mouseMove(event);
+                });
+            }
+            
+            function _mouseUp(event) {
+                $scope.$apply(function(){
+                    mouseUp(event);
+                });
+                
+                $document.off('mousemove', _mouseMove);
+                $document.off('mouseup', _mouseUp);
+            }
+            
+            $document.on('mousemove', _mouseMove);
+            $document.on('mouseup', _mouseUp);
+        });
+    }
+
+    function onDrop($scope, $element, dropHandler) {
+        $element.on('dragover', function (event) { 
+            event.preventDefault(); 
+        });
+
+        $element.on('dragenter', function (event) { 
+            event.preventDefault(); 
+        });
+        
+        $element.on('drop', function (event) {
+            event.preventDefault();
+            $scope.$apply(function(){
+                dropHandler(event);
+            });
+        });
+    }
     
     // app
     
@@ -216,6 +264,35 @@
                 }]
             };
         })
+        .directive('imageDrop', function () {
+            return {
+                restrict: 'A',
+                link: function ($scope, $element, $attrs) {
+                    var comic = $element.find('img')[0];
+                    
+                    function _onDrop(event) {
+                        var file = event.dataTransfer.files[0];
+                        if(file == null) {
+                            error('File object not available');
+                            return;
+                        }
+
+                        $scope.reset();
+                    
+                        var reader = new FileReader();
+                        reader.onload = function(e) { 
+                            comic.src = e.target.result;
+                        }; 
+                        
+                        reader.readAsDataURL(file);
+                    }
+                    
+                    onDrop($scope, $element, _onDrop);
+                },
+                controller: ['$scope', function ($scope) {              
+                }]
+            }
+        })
         .directive('panelEditor', ['$document', function ($document) {
             return {
                 templateUrl: 'templates/panel-editor.html',
@@ -225,35 +302,6 @@
                 link: function ($scope, $element, $attrs) {
                     var comic = $element.find('img')[0];
                     $scope.comic = comic; //TODO - better way to get the comic width and height to the snapper
-
-                    $element.on('dragover', function (event) { 
-                        event.preventDefault(); 
-                    });
-
-                    $element.on('dragenter', function (event) { 
-                        event.preventDefault(); 
-                    });
-                    
-                    $element.on('drop', function (event) {
-                        event.preventDefault();
-                        
-                        var file = event.dataTransfer.files[0];
-                        if(file == null) {
-                            error('File object not available');
-                            return;
-                        }
-
-                        $scope.$apply(function(){
-                            $scope.reset();
-                        });
-                        
-                        var reader = new FileReader();
-                        reader.onload = function(e) { 
-                            comic.src = e.target.result;
-                        }; 
-                        
-                        reader.readAsDataURL(file);
-                    });
   
                     function getCoords(event) {
                         var rect = comic.getBoundingClientRect();
@@ -264,34 +312,23 @@
                             y: Math.round(y) 
                         };
                     }
-                    
-                    $element.on('mousedown', function (event) {
-                        event.preventDefault();
-                        
-                        var {x, y} = getCoords(event);
-                        $scope.$apply(function(){
-                            $scope.createPanel(x, y);
-                        });
-                        
-                        function mouseMove(event) {
-                            var {x, y} = getCoords(event);
-                            $scope.$apply(function(){
-                                $scope.dragPanel(x, y);
-                            });
-                        }
 
-                        $document.on('mousemove', mouseMove);
-                        $document.on('mouseup', function mouseUp(event) {
-                            
-                            mouseMove(event);
-                            $scope.$apply(function(){
-                                $scope.finalisePanel();
-                            });
-                            
-                            $document.off('mousemove', mouseMove);
-                            $document.off('mouseup', mouseUp);
-                        });
-                    });
+                    function mouseDown(event) {
+                        var {x, y} = getCoords(event);
+                        $scope.createPanel(x, y);
+                    }
+                    
+                    function mouseMove(event) {
+                        var {x, y} = getCoords(event);
+                        $scope.dragPanel(x, y);
+                    }
+                    
+                    function mouseUp(event) {
+                        mouseMove(event);
+                        $scope.finalisePanel();
+                    }
+                    
+                    onDrag($scope, $document, $element, mouseDown, mouseMove, mouseUp);
                 },
                 controller: ['$scope', '$element', function ($scope, $element) {
                     $scope.reset = function () {
