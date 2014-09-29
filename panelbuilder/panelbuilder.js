@@ -77,7 +77,6 @@
                 function _onDrop(event) {
                     var file = event.dataTransfer.files[0];
                     if(file == null) {
-                        error('File object not available');
                         return;
                     }
 
@@ -93,7 +92,10 @@
                 
                 jqExt.onDrop($scope, $element, _onDrop);
             },
-            controller: ['$scope', function ($scope) {              
+            controller: ['$scope', function ($scope) {
+                if($scope.reset == null) {
+                    $scope.reset = function () { }; // overridable reset function
+                }
             }]
         }
     }])
