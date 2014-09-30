@@ -187,6 +187,16 @@
                             $scope.model.panelCollection.selectedPanel = panel;
                         }
                     });
+                };
+                
+                $scope.$on('keyup:46', function () {
+                    $scope.$apply(function () {
+                        $scope.deletePanel();
+                    });
+                })
+                
+                $scope.deletePanel = function () {
+                    $scope.model.panelCollection.deletePanel($scope.model.panelCollection.selectedPanel);
                 }
                 
                 $scope.createPanel = function (x, y) { 

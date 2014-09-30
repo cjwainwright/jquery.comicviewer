@@ -58,4 +58,16 @@
                 });
             }
         };
-    }]);
+    }])
+    .directive('keyEvents', ['$document', '$rootScope', function($document, $rootScope) {
+        return {
+            restrict: 'A',
+            link: function() {
+                $document.bind('keyup', function(e) {
+                    $rootScope.$broadcast('keyup', e);
+                    $rootScope.$broadcast('keyup:' + e.which, e);
+                });
+            }
+        };
+    }])
+    ;

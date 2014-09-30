@@ -40,8 +40,18 @@
         
         this.selectedPanel = panel;
         this.panels.push(panel);
-
     };
+    
+    PanelCollection.prototype.deletePanel = function (panel) {
+        var index = this.panels.indexOf(panel);
+        if(index >= 0) {
+            this.panels.splice(index, 1);
+            if(panel == this.selectedPanel) {
+                index = Math.min(index, this.panels.length - 1);
+                this.selectedPanel = this.panels[index] || null;
+            }
+        }
+    }
     
     PanelCollection.prototype.dragPanel = function (x, y) {
         this.selectedPanel.width = (x - this.selectedPanel.left);
