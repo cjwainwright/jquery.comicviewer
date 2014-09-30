@@ -4,6 +4,10 @@
         return {
             onDrag: function ($scope, $element, mouseDown, mouseMove, mouseUp) {
                 $element.on('mousedown', function (event) {
+                    if(event.which != 1) {
+                        return;
+                    }
+                    
                     event.preventDefault();
                         
                     $scope.$apply(function(){
@@ -11,12 +15,20 @@
                     });
                     
                     function _mouseMove(event) {
+                        if(event.which != 1) {
+                            return;
+                        }
+
                         $scope.$apply(function(){
                             mouseMove(event);
                         });
                     }
                     
                     function _mouseUp(event) {
+                        if(event.which != 1) {
+                            return;
+                        }
+
                         $scope.$apply(function(){
                             mouseUp(event);
                         });
