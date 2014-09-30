@@ -1,5 +1,5 @@
 ﻿<ul class="tool-selector">
-    <li ng-repeat="tool in toolSelector.tools" ng-class="selected(tool)" class="tool-icon">
+    <li ng-repeat="tool in toolSelector.tools" class="tool-icon {{selected(tool)}} tool-icon-{{tool.id}}">
         <a href="#" ng-click="toolSelector.selectTool(tool)" title="{{tool.name}}"></a>
     </li>
 </ul>

@@ -18,8 +18,10 @@
             <section class="workspace">
                 <panel-editor model="model"></panel-editor>
             </section>
-            <panel-properties class="properties" panel="model.panelCollection.selectedPanel">
-            </panel-properties>
+            <section class="docked">
+                <panel-properties panel="model.panelCollection.selectedPanel">
+                </panel-properties>
+            </section>
         </main>
         <footer>
             <panel-serialiser panels="model.panelCollection.panels"></panel-serialiser>
