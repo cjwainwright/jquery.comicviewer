@@ -11,7 +11,7 @@
             replace: true,
             controller: ['$scope', function ($scope) {
                 $scope.selected = function (tool) {
-                    return $scope.toolSelector.selectedTool == tool ? 'selected-tool' : '';
+                    return $scope.toolSelector.selectedTool == tool ? 'tool-icon-selected' : '';
                 };
             }]
         };

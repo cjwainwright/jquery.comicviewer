@@ -9,7 +9,7 @@
     ];
 
     function ToolSelector() {
-        this.selectedTool = tools[0];
+        this.selectedTool = tools[1];
     }
     
     ToolSelector.prototype.tools = tools;

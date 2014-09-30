@@ -91,7 +91,7 @@ ul.tool-selector {
     margin: 0;
 }
 
-.selected-tool {
+.tool-icon-selected {
     background-color: #ddd;
     border: 2px solid #ccc;
     border-radius: 5px;
@@ -120,6 +120,19 @@ ul.tool-selector {
 
 .tool-icon-preview {
     background-image: url('icons/preview.svg');
+}
+
+.tool-cursor-select {
+    cursor: default;
+}
+
+.tool-cursor-addpanel {
+    cursor: crosshair;
+}
+
+.tool-cursor-preview {
+    cursor: -webkit-zoom-in;
+    cursor: -moz-zoom-in;
 }
 
 /* panel-editor */
