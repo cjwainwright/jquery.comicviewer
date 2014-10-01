@@ -19,12 +19,11 @@
                 <panel-editor model="model"></panel-editor>
             </section>
             <section class="docked">
-                <panel-properties panel="model.panelCollection.selectedPanel">
-                </panel-properties>
+                <panel-properties panel="model.panelCollection.selectedPanel"></panel-properties>
+                <panel-serialiser panels="model.panelCollection.panels"></panel-serialiser>
             </section>
         </main>
         <footer>
-            <panel-serialiser panels="model.panelCollection.panels"></panel-serialiser>
         </footer>
     </body>
 </html>

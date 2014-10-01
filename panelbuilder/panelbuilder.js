@@ -56,15 +56,24 @@
             scope: { panels: '=' },
             replace: true,
             controller: ['$scope', function ($scope) {
-                var serialiser = new  panelBuilder.Serialiser();
+                var serialiser = new panelBuilder.Serialiser();
+                
+                $scope.valid = true;
+                
+                var enteredValue = null;
                 Object.defineProperty($scope, 'serialisedPanels', {
                     get: function () {
-                        return serialiser.serialisePanels($scope.panels);
+                        return enteredValue || serialiser.serialisePanels($scope.panels);
                     },
                     set: function (value) {
-                        serialiser.deserialisePanels(value, $scope.panels);
+                        $scope.valid = serialiser.deserialisePanels(value, $scope.panels);
+                        if($scope.valid) {
+                            enteredValue = null;
+                        } else {
+                            enteredValue = value;
+                        }
                     }
-                });                    
+                });
             }]
         };
     })

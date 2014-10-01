@@ -123,27 +123,50 @@
     
     PanelSerialiser.prototype.serialisePanels = function (panels) {
         var data = panels.map(function (panel) {
-            return [panel.left, panel.top, panel.width, panel.height].join(',');;
+            return [panel.left, panel.top, panel.width, panel.height].join(',');
         }).join(';');
         
         return data;
     };
     
     PanelSerialiser.prototype.deserialisePanels = function (data, currentPanels) {
+        if(data == '') {
+            currentPanels.length = 0;
+            return true;
+        }        
+
+        var valid = true;
         var panels = data.split(';').map(function (panelData) {
-            return panelData.split(',').map(function (val) {
-                return parseInt(val)
+            var panelDataItems = panelData.split(',');
+            if(panelDataItems.length != 4) {
+                valid = false;
+                return [0,0,0,0];
+            }
+            return panelDataItems.map(function (val) {
+                if(val+'' === (val|0)+'') {
+                    return val;
+                }
+                valid = false;
+                return 0;
             });
         });
         
-        currentPanels.length = panels.length;
-        panels.forEach(function (panel, index) {
-            var currentPanel = currentPanels[index];
-            currentPanel.left = panel[0];
-            currentPanel.top = panel[1];
-            currentPanel.width = panel[2];
-            currentPanel.height = panel[3];
-        });
+        if(valid) {
+            currentPanels.length = panels.length;
+            panels.forEach(function (panel, index) {
+                var currentPanel = currentPanels[index];
+                if(currentPanel == null) {
+                    currentPanel = {};
+                    currentPanels[index] = currentPanel;
+                }
+                currentPanel.left = panel[0];
+                currentPanel.top = panel[1];
+                currentPanel.width = panel[2];
+                currentPanel.height = panel[3];
+            });
+        }
+        
+        return valid;
     };
     
     // model
