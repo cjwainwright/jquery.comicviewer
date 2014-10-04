@@ -168,18 +168,18 @@
                 }
 
                 function mouseDown(event) {
-                    var {x, y} = getCoords(event);
-                    $scope.getToolHandler().mouseDown(x, y);
+                    var coords = getCoords(event);
+                    $scope.getToolHandler().mouseDown(coords.x, coords.y);
                 }
                 
                 function mouseMove(event) {
-                    var {x, y} = getCoords(event);
-                    $scope.getToolHandler().mouseMove(x, y);
+                    var coords = getCoords(event);
+                    $scope.getToolHandler().mouseMove(coords.x, coords.y);
                 }
                 
                 function mouseUp(event) {
-                    var {x, y} = getCoords(event);
-                    $scope.getToolHandler().mouseUp(x, y);
+                    var coords = getCoords(event);
+                    $scope.getToolHandler().mouseUp(coords.x, coords.y);
                 }
                 
                 jqExt.onDrag($scope, $element, mouseDown, mouseMove, mouseUp);
