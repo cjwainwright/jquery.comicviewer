@@ -53,7 +53,8 @@
                 $element.on('drop', function (event) {
                     event.preventDefault();
                     $scope.$apply(function(){
-                        dropHandler(event);
+                        originalEvent = event.originalEvent || event; // if using jQuery need to use original event to get data transfer
+                        dropHandler(originalEvent.dataTransfer);
                     });
                 });
             }

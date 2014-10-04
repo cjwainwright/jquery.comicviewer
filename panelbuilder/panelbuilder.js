@@ -77,8 +77,8 @@
             link: function ($scope, $element, $attrs) {
                 var comic = $element.find('img')[0];
                 
-                function _onDrop(event) {
-                    var file = event.dataTransfer.files[0];
+                function _onDrop(dataTransfer) {
+                    var file = dataTransfer.files[0];
                     if(file == null) {
                         return;
                     }
@@ -138,6 +138,15 @@
                             $scope.finalisePanel();
                         }
                     },
+                    'preview': {
+                        mouseDown: function (x, y) {
+                            $scope.preview(x, y);
+                        },
+                        mouseMove: function (x, y) {
+                        },
+                        mouseUp: function (x, y) {
+                        }
+                    },
                     'null': {
                         mouseDown: function (x, y) {
                         },
@@ -176,8 +185,13 @@
                 jqExt.onDrag($scope, $element, mouseDown, mouseMove, mouseUp);
             },
             controller: ['$scope', '$element', function ($scope, $element) {
+                var comic = $element.find('img');
+
                 $scope.reset = function () {
                     $scope.model.panelCollection.clear();
+                    comic.removeData('panels');
+                    comic.removeAttr('width');
+                    comic.removeAttr('height');
                 };
                 
                 $scope.getToolHandler = function  () {
@@ -216,15 +230,30 @@
                     
                     $scope.model.panelCollection.createPanel(snapper.snapX(x), snapper.snapY(y));
                 };
+
                 $scope.dragPanel = function (x, y) { 
                     var snapper = $scope.model.panelSnapper;
 
                     $scope.model.panelCollection.dragPanel(snapper.snapX(x), snapper.snapY(y));
                 };
+
                 $scope.finalisePanel = function (x, y) { 
                     var snapper = $scope.model.panelSnapper;
 
                     $scope.model.panelCollection.finalisePanel(snapper.snapX(x), snapper.snapY(y));
+                };
+                
+                $scope.preview = function (x, y) {
+                    var comic = $element.find('img');
+                    
+                    var serialiser = new panelBuilder.Serialiser();
+                    var panelData = serialiser.serialisePanels($scope.model.panelCollection.panels);
+                    comic.data('panels', panelData);
+                    comic.attr('width', comic.width());
+                    comic.attr('height', comic.height());
+
+                    var viewer = comic.comicViewer();
+                    viewer.show({x: x, y: y});
                 };
             }]
         };
