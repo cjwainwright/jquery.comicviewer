@@ -62,11 +62,33 @@
     .directive('keyEvents', ['$document', '$rootScope', function($document, $rootScope) {
         return {
             restrict: 'A',
-            link: function() {
+            link: function($scope, $element, $attrs) {
+                var categories = $element.attr('key-events-categories').split(',');
                 $document.bind('keyup', function(e) {
-                    $rootScope.$broadcast('keyup', e);
-                    $rootScope.$broadcast('keyup:' + e.which, e);
+                    var broadcast = true;
+                    if((e.keySourceCategory) &&
+                       (categories.length > 0)) {
+                        broadcast = categories.some(function (category) {
+                            return category == e.keySourceCategory;
+                        });
+                    }
+                    
+                    if(broadcast) {
+                        $rootScope.$broadcast('keyup', e);
+                        $rootScope.$broadcast('keyup:' + e.which, e);
+                    }
                 });
+            }
+        };
+    }])
+    .directive('keySource', [function() {
+        return {
+            restrict: 'A',
+            link: function($scope, $element, $attrs) {
+                var keySourceCategory = $element.attr('key-source-category');
+                $element.on('keyup', function (e) {
+                    e.keySourceCategory = keySourceCategory;
+                })
             }
         };
     }])
