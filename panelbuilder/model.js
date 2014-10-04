@@ -16,7 +16,6 @@
 
     ToolSelector.prototype.selectTool = function (tool) {
         this.selectedTool = tool;
-        console.log(tool);
     };
     
     // panels
