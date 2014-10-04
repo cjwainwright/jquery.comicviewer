@@ -123,7 +123,11 @@
     
     PanelSerialiser.prototype.serialisePanels = function (panels) {
         var data = panels.map(function (panel) {
-            return [panel.left, panel.top, panel.width, panel.height].join(',');
+            if(panel.invalidValue != null) {
+                return panel.invalidValue;
+            } else {
+                return [panel.left, panel.top, panel.width, panel.height].join(',');
+            }
         }).join(';');
         
         return data;
@@ -140,31 +144,54 @@
             var panelDataItems = panelData.split(',');
             if(panelDataItems.length != 4) {
                 valid = false;
-                return [0,0,0,0];
+                return {
+                    left: 0,
+                    top: 0,
+                    width: 0,
+                    height: 0,
+                    invalidValue: panelData
+                };
             }
-            return panelDataItems.map(function (val) {
-                if(val+'' === (val|0)+'') {
-                    return val;
-                }
-                valid = false;
-                return 0;
-            });
+            
+            var isInt = function (val) {
+                return (val + '' === (val|0) + '');
+            };
+            
+            var validPanel = true;
+            var toInt = function (val) {
+                return isInt(val) ? val|0 : (validPanel = false, 0);
+            };
+            
+            var left = toInt(panelDataItems[0]);
+            var top = toInt(panelDataItems[1]);
+            var width = toInt(panelDataItems[2]);
+            var height = toInt(panelDataItems[3]);
+            var invalidValue = validPanel ? null : panelData;
+            
+            valid &= validPanel;
+            
+            return {
+                left: left,
+                top: top,
+                width: width,
+                height: height,
+                invalidValue: invalidValue
+            };
         });
         
-        if(valid) {
-            currentPanels.length = panels.length;
-            panels.forEach(function (panel, index) {
-                var currentPanel = currentPanels[index];
-                if(currentPanel == null) {
-                    currentPanel = {};
-                    currentPanels[index] = currentPanel;
-                }
-                currentPanel.left = panel[0];
-                currentPanel.top = panel[1];
-                currentPanel.width = panel[2];
-                currentPanel.height = panel[3];
-            });
-        }
+        currentPanels.length = panels.length;
+        panels.forEach(function (panel, index) {
+            var currentPanel = currentPanels[index];
+            if(currentPanel == null) {
+                currentPanel = {};
+                currentPanels[index] = currentPanel;
+            }
+            currentPanel.left = panel.left;
+            currentPanel.top = panel.top;
+            currentPanel.width = panel.width;
+            currentPanel.height = panel.height;
+            currentPanel.invalidValue = panel.invalidValue;
+        });
         
         return valid;
     };

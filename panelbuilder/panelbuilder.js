@@ -60,18 +60,12 @@
                 
                 $scope.valid = true;
                 
-                var enteredValue = null;
                 Object.defineProperty($scope, 'serialisedPanels', {
                     get: function () {
-                        return enteredValue || serialiser.serialisePanels($scope.panels);
+                        return serialiser.serialisePanels($scope.panels);
                     },
                     set: function (value) {
                         $scope.valid = serialiser.deserialisePanels(value, $scope.panels);
-                        if($scope.valid) {
-                            enteredValue = null;
-                        } else {
-                            enteredValue = value;
-                        }
                     }
                 });
             }]
