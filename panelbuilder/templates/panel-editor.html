@@ -1,4 +1,5 @@
-﻿<div image-drop class="workspace-wrapper tool-cursor-{{model.toolSelector.selectedTool.id}}">  
+﻿<div image-drop class="workspace-wrapper tool-cursor-{{model.toolSelector.selectedTool.id}} {{focussed ? 'focussed' : ''}}">  
+    <input type="text" class="offscreen" ng-focus="focussed = true" ng-blur="focussed = false" ng-keyup="keyUp($event)" />
     <img class="comic" src="comic.png" />  
     <panel-collection panels="model.panelCollection"></panel-collection>  
 </div>

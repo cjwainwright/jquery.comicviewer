@@ -112,9 +112,12 @@
                 var comic = $element.find('img')[0];
                 $scope.comic = comic; //TODO - better way to get the comic width and height to the snapper
 
+                var focus = $element.find('input')[0];
+
                 $scope.toolHandlers = {
                     'select': {
                         mouseDown: function (x, y) {
+                            focus.focus();
                             $scope.selectPanel(x, y);
                         },
                         mouseMove: function (x, y) {
@@ -124,6 +127,7 @@
                     },
                     'addpanel': {
                         mouseDown: function (x, y) {
+                            focus.focus();
                             $scope.createPanel(x, y);
                         },
                         mouseMove: function (x, y) {
@@ -191,13 +195,17 @@
                         }
                     });
                 };
+
+                $scope.deselectAll = function () {
+                    $scope.model.panelCollection.selectedPanel = null;
+                };
                 
-                $scope.$on('keyup:46', function () {
-                    $scope.$apply(function () {
+                $scope.keyUp = function (e) {
+                    if(e.which == 46) {
                         $scope.deletePanel();
-                    });
-                })
-                
+                    }
+                };
+  
                 $scope.deletePanel = function () {
                     $scope.model.panelCollection.deletePanel($scope.model.panelCollection.selectedPanel);
                 }
