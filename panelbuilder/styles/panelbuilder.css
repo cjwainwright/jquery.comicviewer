@@ -132,15 +132,15 @@ ul.tool-selector {
 }
 
 .tool-icon-select {
-    background-image: url('icons/select.svg');
+    background-image: url('../icons/select.svg');
 }
 
 .tool-icon-addpanel {
-    background-image: url('icons/addpanel.svg');
+    background-image: url('../icons/addpanel.svg');
 }
 
 .tool-icon-preview {
-    background-image: url('icons/preview.svg');
+    background-image: url('../icons/preview.svg');
 }
 
 .tool-cursor-select {

@@ -3,14 +3,14 @@
     <head>
         <meta charset="utf8"/>
         <title>Comic Viewer Panel Builder</title>
-        <link rel="stylesheet" href="panelbuilder.css" />
+        <link rel="stylesheet" href="styles/panelbuilder.css" />
         <link rel="stylesheet" href="../jquery.comicviewer.css" />
-        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="scripts/jquery.min.js"></script>
         <script src="../jquery.comicviewer.js"></script>
-        <script src="angular.js"></script>
-        <script src="extensions.js"></script>
-        <script src="model.js"></script>
-        <script src="panelbuilder.js"></script>
+        <script src="scripts/angular.min.js"></script>
+        <script src="scripts/extensions.js"></script>
+        <script src="scripts/model.js"></script>
+        <script src="scripts/panelbuilder.js"></script>
     </head>
     <body ng-controller="MainCtrl">
         <header>
@@ -19,7 +19,7 @@
         <main>
             <tool-selector tool-selector="model.toolSelector"></tool-selector>
             <section class="workspace">
-                <panel-editor model="model"></panel-editor>
+                <panel-editor model="model" src="images/comic.png"></panel-editor>
             </section>
             <section class="docked">
                 <panel-properties panel="model.panelCollection.selectedPanel"></panel-properties>

@@ -106,10 +106,11 @@
         return {
             templateUrl: 'templates/panel-editor.html',
             restrict: 'E',
-            scope: { model: '=' },
+            scope: { model: '=', src: '@' },
             replace: true,
             link: function ($scope, $element, $attrs) {
                 var comic = $element.find('img')[0];
+                comic.src = $scope.src;
                 $scope.comic = comic; //TODO - better way to get the comic width and height to the snapper
 
                 var focus = $element.find('input')[0];
