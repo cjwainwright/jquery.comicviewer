@@ -34,6 +34,22 @@ header {
     flex: 0 0 auto;
 }
 
+header > aside {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0.7em
+}
+
+header > aside > a {
+    color: #ccc;
+    text-decoration: none;
+}
+
+header > aside > a:hover {
+    text-decoration: underline;
+}
+
 main {
     flex: 1 0 auto;
     display: flex;

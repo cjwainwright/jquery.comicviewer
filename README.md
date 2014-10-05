@@ -39,3 +39,15 @@ $('#launcher').click(function(){
     viewer.show();
 });
 ```
+
+Panel Builder
+-------------
+
+To easily construction of the data-panels attribute you can make use of the panel builder tool.
+Simply drop your comic image onto the workspace and use the GUI to define your panels.
+Dragging conveniently snaps to the edges of your image and the edges of other panels you've created.
+You can use the preview tool as you go along to check how it'll look in the comic viewer.
+Once you're happy copy the output data and paste it into your html data-panels attribute.
+
+[Try the Panel Builder.](https://rawgit.com/cjwainwright/jquery.comicviewer/master/panelbuilder/index.html)
+
