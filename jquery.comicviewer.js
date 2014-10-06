@@ -71,7 +71,33 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             return ((panel[0] <= x) && (panel[1] <= y) && (x <= panel[0] + panel[2]) && (y <= panel[1] + panel[3]));
         });
     }
-
+    
+    function imageReady($img, callback) {
+        if($img[0].complete) {
+            setTimeout(callback, 0);
+        } else {
+            $img.load(callback);
+        }
+    }
+        
+    function getNaturalSize($img, callback) {
+        var img = $img[0];
+        if('naturalWidth' in img) {
+            imageReady($img, function () {
+                callback(img.naturalWidth, img.naturalHeight);
+            });
+        } else {
+            var $image = $('<img />').attr('src', $img.attr('src'));
+            imageReady($image, function () {
+                var $frame = $('<iframe src="javascript:<html></html>;"/>');
+                $('body').append($frame);
+                $frame.contents().find('body').append($image);
+                callback($image.width(), $image.height());
+                $frame.detach();
+            });
+        }
+    }
+    
     $.fn.comicViewer = function () {
         var that = this;
         var currentPanel = 0;
@@ -79,7 +105,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         // create elements
         var $box = $('<span class="comic-viewer comic-viewer-portrait"/>'),
             $viewport =  $('<div class="comic-viewer-viewport"/>'),
-            $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')), // note we override any global styles on imagegs which affect their width/height by setting them back to auto
+            $image = $('<img class="comic-viewer-image"/>').attr('src', this.attr('src')), // note we override any global styles on images which affect their width/height by setting them back to auto
             $nav = $('<div class="comic-viewer-nav"/>'),
             $navPrev = $('<a class="comic-viewer-nav-prev"><span class="comic-viewer-arrow-prev"/></a>'),
             $navNext = $('<a class="comic-viewer-nav-next"><span class="comic-viewer-arrow-next"/></a>');
@@ -160,12 +186,15 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                     marginTop: Math.floor((availableHeight - scale * height) / 2)
                 });
                 
-                $image.css({
-                    left: -left * scale, 
-                    top: -top * scale,
-                    width: that.attr("width") * scale,
-                    height: that.attr("height") * scale
+                getNaturalSize(that, function (naturalWidth, naturalHeight) {
+                    $image.css({
+                        left: -left * scale, 
+                        top: -top * scale,
+                        width: naturalWidth * scale,
+                        height: naturalHeight * scale
+                    });
                 });
+                
                 currentPanel = panel;
             } else {
                 destroy();

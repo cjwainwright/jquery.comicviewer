@@ -191,8 +191,6 @@
                 $scope.reset = function () {
                     $scope.model.panelCollection.clear();
                     comic.removeData('panels');
-                    comic.removeAttr('width');
-                    comic.removeAttr('height');
                 };
                 
                 $scope.getToolHandler = function  () {
@@ -250,8 +248,6 @@
                     var serialiser = new panelBuilder.Serialiser();
                     var panelData = serialiser.serialisePanels($scope.model.panelCollection.panels);
                     comic.data('panels', panelData);
-                    comic.attr('width', comic.width());
-                    comic.attr('height', comic.height());
 
                     var viewer = comic.comicViewer();
                     viewer.show({x: x, y: y});
