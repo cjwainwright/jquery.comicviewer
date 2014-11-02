@@ -257,6 +257,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         });
 
         function destroy() {
+            offqueue.dequeue('show');
+
             currentPanel = 0;
             $box.detach();
             $(document).off('keydown', keydown);
@@ -282,10 +284,31 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
             // add short delay before refreshing to allow css transition to synchronize
             setTimeout(refresh, 50);
+            
+            onqueue.dequeue('show');
+            
+            return this;
         }
         
+        var onqueue = $({});
+        var offqueue = $({});
+        
         return {
-            show: show
+            show: show,
+            on: function (event, callback) {
+                onqueue.queue(event, function (next) {
+                    callback();
+                    next();
+                });
+                return this;
+            },
+            off: function (event, callback) {
+                offqueue.queue(event, function (next) {
+                    callback();
+                    next();
+                });
+                return this;
+            }
         };
     };
 })(jQuery);
